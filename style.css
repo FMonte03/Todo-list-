@@ -1,0 +1,147 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+    background: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    height: 90vh;
+    width: 90vw;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.parentSidePannel {
+    width: 250px;
+    background: #343a40;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+.childrenSides {
+    flex: 1;
+    padding: 20px;
+    border-bottom: 1px solid #495057;
+    text-align: center;
+    transition: background 0.3s ease;
+}
+
+.childrenSides:last-child {
+    border-bottom: none;
+}
+
+.childrenSides>div:hover {
+    background: #495057;
+    cursor: pointer;
+}
+
+.childrenSides h2 {
+    margin-bottom: 10px;
+    font-size: 1.5em;
+    color: #adb5bd;
+}
+
+.childrenSides div {
+    margin: 10px 0;
+    font-size: 1.2em;
+    color: #ced4da;
+}
+
+.mainList {
+    flex: 1;
+    padding: 20px;
+    background: #fff;
+    overflow-y: auto;
+}
+
+.mainList h2 {
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: #343a40;
+}
+
+.taskItem {
+    background: #e9ecef;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s ease;
+   
+    
+    flex: 1;
+  
+    font-size: 1.2em;
+    color: #495057;
+}
+
+.taskItem:hover {
+    background: #ced4da;
+}
+
+.taskLeft{
+    display: grid;
+    grid-template-columns: 25px 100px;
+    grid-template-areas: 
+    "c i"
+    "c t";
+
+}
+.taskText{
+    grid-area: i;
+}
+
+.time{
+    grid-area: t;
+    font-size: .9rem;
+}
+.completionButton{
+    position: relative;
+    top: 10px;
+    grid-area: c;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    border: 1px solid red;
+
+}
+
+.hPriority, .category{
+    font-size: .9rem;
+}
+ 
+.category{
+    margin-left: 5px;
+}
+.hPriority{
+    border: 1px solid red;
+    margin-bottom: 5px;
+    padding: 0px 5px 0px 5px; 
+    border-radius: 10px;
+    color: #fafafa;
+    background-color: red;
+}
+
+.overdue{
+    color: red;
+}
+
+.notDue{
+    color: rgb(31, 189, 44);
+}

@@ -10,10 +10,50 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
+        <div class="modal">
+
+  
+  <div class="modal-content">
+    <h2>Add Task</h2>
+    <form class="taskForm">
+        <label for="taskName">TaskName</label>
+        <input type="text" id="taskName" name="taskName" required>
+
+        <label for="dueDate">Due Date</label>
+        <input type="date" id="dueDate" name="dueDate" required>
+
+        <label for="dueTime">Due Time</label>
+        <input type="time" id="dueTime" name="dueTime" required>
+
+        <label for="priority">Priority:</label>
+                <select id="priority" name="priority" required>
+                    <option value="none">None</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+
+        <label for="cat">Category:</label>
+            <select id="cat" name="cat" required>
+                <option value="None">None</option>
+                <!---Add new ones through JS---->
+            </select>
+        
+
+            <button type="submit">Add Task</button>
+
+
+
+
+
+    </form>
+  </div>
+
+</div>
         <div class="container">
             <div class="parentSidePannel">
                 <div class="childrenSides" id="square1">
-                    <div>Add Task</div>
+                    <div class="addButton">Add Task</div>
                     <div>Today</div>
                     <div>Upcoming</div>
                     <div>Completed</div>

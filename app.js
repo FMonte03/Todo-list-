@@ -10,12 +10,21 @@ priority
 "none"
 taskName
 : 
-"Eat Brea
+"Eat Bread
 */
 const date = new Date()
 let local = date.toLocaleString('en-US', { hour12: false})
 console.log(date.toLocaleString('en-US', { hour12: false}))
 
+
+
+let currentList = 'Today'
+
+
+
+{
+
+}
 
 const addTask = document.querySelector('.addButton')
 const Modal = document.querySelector('.modal')
@@ -26,6 +35,58 @@ const priority = document.querySelector('#priority')
 
 const taskForm = document.querySelector('.taskForm')
 const mainList = document.querySelector('.mainList')
+const todayButton = document.querySelector('.today')
+const  containerTitle = document.querySelector('.h2Title')
+const upcomingButton = document.querySelector('.Upcoming')
+const overdueButton = document.querySelector('.Overdue')
+
+const mainContainer = document.querySelector('.mailList')
+
+todayButton.addEventListener('click', todayContainer)
+upcomingButton.addEventListener('click', upcomingContainer)
+overdueButton.addEventListener('click', overdueContainer)
+
+let tasks = [] 
+let today = [] 
+let upcoming = [] 
+let overdue = [] 
+let high = [] 
+let medium = [] 
+let low = [] 
+
+// Container methods will wipe current conteiner and replace it with tasks of given time slot. 
+
+
+
+function clearTaskItems(){
+taskElements = document.getElementsByClassName('taskItem')
+    for(let i = taskElements.length; i > 0; i--){
+        taskElements[taskElements.length -1 ].remove(); 
+    }
+
+}
+
+function todayContainer(){
+    currentList,containerTitle.innerHTML = 'Today'
+    
+    clearTaskItems()
+    createTaskElementsIteratevely(today)
+    
+}
+
+function upcomingContainer(){
+    currentList,containerTitle.innerHTML = 'Upcoming'
+    clearTaskItems()
+    createTaskElementsIteratevely(upcoming)
+}
+
+
+function overdueContainer(){
+    currentList,containerTitle.innerHTML = 'Overdue'
+    clearTaskItems()
+    createTaskElementsIteratevely(overdue)
+}
+
 
 addTask.addEventListener('click', ShowMenu )
 
@@ -38,7 +99,6 @@ taskForm.addEventListener('submit', (taskForm) =>{
 
     getTaskInfo()
     hideModal()
-    createTaskElement()
    
     console.log(tasks, today, upcoming, overdue, tasks[0])
     taskForm.preventDefault() //stops whole page from reloading on form submit. 
@@ -47,13 +107,6 @@ taskForm.addEventListener('submit', (taskForm) =>{
 })
 
 //There are many different types of tasks. tasks var will contain all tasks.
-let tasks = [] 
-let today = [] 
-let upcoming = [] 
-let overdue = [] 
-let high = [] 
-let medium = [] 
-let low = [] 
 
 //a task object will be created and placed into task list. Additionally if task is upcoming, today, or overdue it will also at it to the list. 
 function getTaskInfo(){
@@ -99,43 +152,45 @@ div class="taskItem">
 
 
 
-
-function createTaskElement(){
-    let taskItem = document.createElement('div')
-    taskItem.classList.add('taskItem')
+function createTaskElementsIteratevely(array){
+    for(let i in array){
+        let taskItem = document.createElement('div')
+        taskItem.classList.add('taskItem')
     
+        
 
-    let taskLeft = document.createElement('div')
-    taskLeft.classList.add('taskLeft')
-    taskItem.append(taskLeft)
+        let taskLeft = document.createElement('div')
+        taskLeft.classList.add('taskLeft')
+        taskItem.append(taskLeft)
 
-    let completionButton = document.createElement('button')
-    completionButton.classList.add('completionButton')
-    taskLeft.append(completionButton)
+        let completionButton = document.createElement('button')
+        completionButton.classList.add('completionButton')
+        taskLeft.append(completionButton)
 
-    let taskText = document.createElement('div')
-    taskText.classList.add('taskText')
-    taskText.innerHTML = tasks[tasks.length - 1].taskName 
-    taskLeft.append(taskText)
+        let taskText = document.createElement('div')
+        taskText.classList.add('taskText')
+        taskText.innerHTML = array[i].taskName 
+        taskLeft.append(taskText)
 
-    let time = document.createElement('div')
-    time.classList.add('time')
-    time.innerHTML = tasks[tasks.length - 1].dueTime 
-    taskLeft.append(time)
+        let time = document.createElement('div')
+        time.classList.add('time')
+        time.innerHTML = array[i].dueTime 
+        taskLeft.append(time)
 
-    let taskRight = document.createElement('div')
-    taskRight.classList.add('taskRight')
-    taskItem.append(taskRight)
+        let taskRight = document.createElement('div')
+        taskRight.classList.add('taskRight')
+        taskItem.append(taskRight)
 
-    let taskPriority = document.createElement('div')
-    taskPriority.classList.add('hPriority') //cannot be hardcoded needs to be in accordance to priority value 
-    taskPriority.innerHTML = tasks[tasks.length - 1].priority 
-    taskRight.append(taskPriority)  
+        let taskPriority = document.createElement('div')
+        taskPriority.classList.add('hPriority') //cannot be hardcoded needs to be in accordance to priority value 
+        taskPriority.innerHTML = array[i].priority 
+        taskRight.append(taskPriority)  
     
 
     
 
 mainList.append(taskItem)
+    }
 }
 
 
@@ -209,3 +264,19 @@ function isUpComing(taskTime, taskDate){
 
 }
 
+
+
+
+
+let todayTasks = {taskName: "Wakeup", dueDate: '2024-06-10', dueTime:'08:00', priority:'High'}
+let todayTasks1 = {taskName: "EatBK", dueDate: '2024-06-10', dueTime:'20:00', priority:'High'}
+let todayTasks2 = {taskName: "Sleep", dueDate: '2024-06-10', dueTime:'23:00', priority:'High'}
+
+overdue.push(todayTasks1)
+overdue.push(todayTasks2)
+today.push(todayTasks)
+today.push(todayTasks1)
+today.push(todayTasks2)
+
+
+todayContainer()

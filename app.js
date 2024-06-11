@@ -17,7 +17,7 @@ let local = date.toLocaleString('en-US', { hour12: false})
 console.log(date.toLocaleString('en-US', { hour12: false}))
 
 
-
+let taskID
 let currentList = 'Today'
 
 
@@ -99,7 +99,10 @@ taskForm.addEventListener('submit', (taskForm) =>{
 
     getTaskInfo()
     hideModal()
-   
+//Once a task is added Main container should reload incase new task goes in container. 
+if(currentList == 'Today'){todayContainer()}
+else if(currentList == 'Upcoming'){upcomingContainer()}
+else if(currentList == 'Overdue'){overdueContainer()}
     console.log(tasks, today, upcoming, overdue, tasks[0])
     taskForm.preventDefault() //stops whole page from reloading on form submit. 
   
@@ -115,6 +118,8 @@ function getTaskInfo(){
     task.dueDate = dueDate.value
     task.dueTime = dueTime.value
     task.priority = priority.value
+    task.ID = taskID //task ID will be used to identify same task so when they are deleted, every array will be checked for that task and if found it will be deleted.
+    taskID = taskID++
 
     if( isOverdue(task.dueTime, task.dueDate)){
         overdue.push(task)
@@ -182,12 +187,29 @@ function createTaskElementsIteratevely(array){
         taskItem.append(taskRight)
 
         let taskPriority = document.createElement('div')
-        taskPriority.classList.add('hPriority') //cannot be hardcoded needs to be in accordance to priority value 
-        taskPriority.innerHTML = array[i].priority 
+        if(array[i].priority.toLowerCase() == "high"){
+            taskPriority.classList.add("hPriority")
+            taskPriority.classList.add("Priority")
+        }
+        else if(array[i].priority.toLowerCase() == "medium"){
+            taskPriority.classList.add("mPriority")
+            taskPriority.classList.add("Priority")
+        }
+        else if(array[i].priority.toLowerCase() == "low"){
+            taskPriority.classList.add("lPriority")
+            taskPriority.classList.add("Priority")
+        }
+        else{
+            taskPriority.classList.add("none")
+        }
+        taskPriority.innerHTML = array[i].priority + " Priority"
         taskRight.append(taskPriority)  
     
 
-    
+    completionButton.addEventListener('click', ()=>{
+        taskItem.remove()
+
+    })
 
 mainList.append(taskItem)
     }

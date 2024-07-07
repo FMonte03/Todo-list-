@@ -17,7 +17,7 @@ let local = date.toLocaleString('en-US', { hour12: false})
 console.log(date.toLocaleString('en-US', { hour12: false}))
 
 
-let taskID
+let taskID = 0 
 let currentList = 'Today'
 
 
@@ -53,6 +53,7 @@ let overdue = []
 let high = [] 
 let medium = [] 
 let low = [] 
+
 
 // Container methods will wipe current conteiner and replace it with tasks of given time slot. 
 
@@ -103,7 +104,7 @@ taskForm.addEventListener('submit', (taskForm) =>{
 if(currentList == 'Today'){todayContainer()}
 else if(currentList == 'Upcoming'){upcomingContainer()}
 else if(currentList == 'Overdue'){overdueContainer()}
-    console.log(tasks, today, upcoming, overdue, tasks[0])
+
     taskForm.preventDefault() //stops whole page from reloading on form submit. 
   
    
@@ -119,7 +120,7 @@ function getTaskInfo(){
     task.dueTime = dueTime.value
     task.priority = priority.value
     task.ID = taskID //task ID will be used to identify same task so when they are deleted, every array will be checked for that task and if found it will be deleted.
-    taskID = taskID++
+    taskID = taskID + 1; 
 
     if( isOverdue(task.dueTime, task.dueDate)){
         overdue.push(task)
@@ -154,11 +155,30 @@ div class="taskItem">
 
 // for future turn this into a for loop that will automatically dynamically generate elemenst based on task lists. so when user selects a list it
 // will iterate through the list and generate task elements
+let completed  = [] 
+//pass task object into function. get TaskId from task object then search all arrays for objects with the same ID and delete them. 
+function TaskDelete(taskE){
+let allArrays = [tasks,today ,upcoming , overdue ,high ,medium,low ]  
+let taskD = JSON.stringify(taskE)
+completed.push(taskE)
+for(const i of allArrays){
+    for(let j in i){
+        if(taskD == JSON.stringify(i[j])){       //structure i = array, j = index in array  so ex) today(arrray)[3(index)]
+            i.splice(j,1)
+        }
+        else{}
+    }
+}
 
+
+
+
+}
 
 
 function createTaskElementsIteratevely(array){
     for(let i in array){
+        console.log(array[i].taskName , " ID:", array[i].ID)
         let taskItem = document.createElement('div')
         taskItem.classList.add('taskItem')
     
@@ -208,6 +228,7 @@ function createTaskElementsIteratevely(array){
 
     completionButton.addEventListener('click', ()=>{
         taskItem.remove()
+        TaskDelete(array[i])
 
     })
 
@@ -223,29 +244,30 @@ function hideModal(){
     let currentYear = date.getFullYear()
     let currentDay = date.getDate()
     let currentMonth = date.getMonth()+1 
-    let currentTime = local.substring(10,13)+ local.substring(13,16)
+    let currentTime = local.substring(10,13)+ local.substring(13,15)
+  
 
  
 //if task time and date greater than current time and date than it is overdue.
 function isOverdue(taskTime, taskDate){
    
-    let taskYear = taskDate.substring(0,4)
-    let taskMonth = taskDate.substring(5,7)
-    let taskDay = taskDate.substring(8,9)
-    
+    let taskYear = Number(taskDate.substring(0,4))
+    let taskMonth = Number(taskDate.substring(5,7))
+    let taskDay = Number(taskDate.substring(8,10))
+    let formatedCurrent = currentTime.replace(':','')
     taskTime = taskTime.replace(':','')
+        console.log(currentYear> taskYear, currentMonth> taskMonth, currentDay> taskDay, Number(formatedCurrent)> Number(taskTime))
     if(currentYear> taskYear){
         return true
     }
-    else if(currentDay> taskDay){
-        return true
-    }
+    
     else if(currentMonth> taskMonth){
         return true
-    }
-    else if(currentTime> taskTime){
+    }                     
+    else if(currentDay>= taskDay && Number(formatedCurrent)> Number(taskTime)){
         return true
     }
+    
     return false
 
 
@@ -255,7 +277,7 @@ function isToday(taskDate){
     let taskYear = taskDate.substring(0,4)
     let taskMonth = taskDate.substring(5,7)
     let taskDay = taskDate.substring(8,10)
-    console.log(currentDay,taskDay, taskDate)
+   
     if((currentYear == taskYear )&& (currentDay == taskDay) && (currentMonth == taskMonth) ){
         return true
     }
@@ -264,24 +286,22 @@ function isToday(taskDate){
 
 function isUpComing(taskTime, taskDate){
     
-    let taskYear = taskDate.substring(0,4)
-    let taskMonth = taskDate.substring(5,7)
-    let taskDay = taskDate.substring(8,9)
+    let taskYear = Number(taskDate.substring(0,4))
+    let taskMonth = Number(taskDate.substring(5,7))
+    let taskDay = Number(taskDate.substring(8,10))
      taskTime = taskTime.replace(':','')
     let formatedCurrent = currentTime.replace(':','')
-     console.log(taskTime, formatedCurrent)
     if(currentYear< taskYear){
         return true
     }
-    else if(currentDay< taskDay){
-        return true
-    }
+    
     else if(currentMonth< taskMonth){
         return true
     }
-    else if(formatedCurrent< taskTime){
+    else if(currentDay< taskDay && Number(formatedCurrent)< Number(taskTime) ){
         return true
     }
+ 
     return false
 
 }
@@ -290,15 +310,8 @@ function isUpComing(taskTime, taskDate){
 
 
 
-let todayTasks = {taskName: "Wakeup", dueDate: '2024-06-10', dueTime:'08:00', priority:'High'}
-let todayTasks1 = {taskName: "EatBK", dueDate: '2024-06-10', dueTime:'20:00', priority:'High'}
-let todayTasks2 = {taskName: "Sleep", dueDate: '2024-06-10', dueTime:'23:00', priority:'High'}
 
-overdue.push(todayTasks1)
-overdue.push(todayTasks2)
-today.push(todayTasks)
-today.push(todayTasks1)
-today.push(todayTasks2)
+
 
 
 todayContainer()

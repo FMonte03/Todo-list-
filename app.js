@@ -22,6 +22,7 @@ let currentList = 'Today'
 
 
 
+
 {
 
 }
@@ -58,7 +59,42 @@ let overdue = []
 let high = [] 
 let medium = [] 
 let low = [] 
+tasks = localStorage.getItem('tasks').split(',')
+localStorage.setItem('tasks', tasks)
 
+function repopulateTaskArrays(){ // go through all tasks and add it to the respective array. 
+//remove all tasks from feature arrays 
+for(const arr of [today, upcoming, overdue, high,medium,low]){
+    arr.splice(0,arr.length);
+}
+
+
+//add all tasks back to feature arrays
+    for(const task of tasks){
+    
+    if( isOverdue(task.dueTime, task.dueDate)){
+        overdue.push(task)
+    }
+
+    if( isToday(task.dueDate)){
+        today.push(task)
+    }
+
+    if( isUpComing(task.dueTime, task.dueDate )){
+        upcoming.push(task)
+    }
+    
+    if(task.priority == "Low"){
+        low.push(task)
+    }
+    if(task.priority == "Medium"){
+        medium.push(task)
+    }
+    if(task.priority == "High"){
+        high.push(task)
+    }
+}
+} 
 
 // Container methods will wipe current conteiner and replace it with tasks of given time slot. 
 
@@ -121,7 +157,8 @@ function ShowMenu(){
 
 taskForm.addEventListener('submit', (taskForm) =>{
 
-    getTaskInfo()
+    getTaskInfo()//whenever a task gets added the storage needs to be updated, 
+    repopulateTaskArrays()
     hideModal()
 //Once a task is added Main container should reload incase new task goes in container. 
 if(currentList == 'Today'){todayContainer()}
@@ -130,9 +167,9 @@ else if(currentList == 'Overdue'){overdueContainer()}
 else if(currentList == 'Low'){lowContainer()}
 else if(currentList == 'Medium'){mediumContainer()}
 else if(currentList == 'High'){highContainer()}
-console.log('b4 prevent')
+
     taskForm.preventDefault() //stops whole page from reloading on form submit. 
-    console.log('after prevent')
+   
    
 })
 
@@ -169,6 +206,7 @@ function getTaskInfo(){
     if(task.priority == "High"){
         high.push(task)
     }
+    
     tasks.push(task)
 }
 /* template: 
@@ -342,7 +380,7 @@ function isUpComing(taskTime, taskDate){
 }
 
 
-
+//Local Storage works in key value pairs, use local storage as if it was a map, use functions localStorage.getItem setItem removeItem
 
 
 

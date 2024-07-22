@@ -40,6 +40,8 @@ body, html {
     transition: background 0.3s ease;
 }
 
+
+
 .childrenSides:last-child {
     border-bottom: none;
 }
@@ -51,13 +53,13 @@ body, html {
 
 .childrenSides h2 {
     margin-bottom: 10px;
-    font-size: 1.5em;
+    font-size: 1.5rem;
     color: #adb5bd;
 }
 
 .childrenSides div {
     margin: 10px 0;
-    font-size: 1.2em;
+    font-size: 1.2rem;
     color: #ced4da;
 }
 
@@ -68,9 +70,21 @@ body, html {
     overflow-y: auto;
 }
 
+#priorityButtons div{
+    margin: 10px 0;
+    font-size: 1.2rem;
+    color: #ced4da;
+}
+#priorityButtons:hover{
+    background-color: #343a40;
+}
+#priorityButtons div:hover{
+   background-color: #495057;
+}
+
 .mainList h2 {
     margin-bottom: 20px;
-    font-size: 2em;
+    font-size: 2rem;
     color: #343a40;
 }
 

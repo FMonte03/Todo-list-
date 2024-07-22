@@ -40,12 +40,17 @@ const  containerTitle = document.querySelector('.h2Title')
 const upcomingButton = document.querySelector('.Upcoming')
 const overdueButton = document.querySelector('.Overdue')
 
-const mainContainer = document.querySelector('.mailList')
+const mainContainer = document.querySelector('.mainList')
+const lowButton = document.querySelector('#low')
+const mediumButton = document.querySelector('#medium')
+const highButton = document.querySelector('#high')
 
 todayButton.addEventListener('click', todayContainer)
 upcomingButton.addEventListener('click', upcomingContainer)
 overdueButton.addEventListener('click', overdueContainer)
-
+lowButton.addEventListener('click', lowContainer)
+mediumButton.addEventListener('click', mediumContainer)
+highButton.addEventListener('click', highContainer)
 let tasks = [] 
 let today = [] 
 let upcoming = [] 
@@ -88,6 +93,24 @@ function overdueContainer(){
     createTaskElementsIteratevely(overdue)
 }
 
+function lowContainer(){
+    currentList,containerTitle.innerHTML = 'Low'
+    clearTaskItems()
+    createTaskElementsIteratevely(low)
+
+}
+
+function mediumContainer(){
+    currentList,containerTitle.innerHTML = 'Medium'
+clearTaskItems()
+createTaskElementsIteratevely(medium)}
+
+function highContainer(){
+    currentList,containerTitle.innerHTML = 'High'
+    clearTaskItems()
+    createTaskElementsIteratevely(high)
+}
+
 
 addTask.addEventListener('click', ShowMenu )
 
@@ -104,9 +127,12 @@ taskForm.addEventListener('submit', (taskForm) =>{
 if(currentList == 'Today'){todayContainer()}
 else if(currentList == 'Upcoming'){upcomingContainer()}
 else if(currentList == 'Overdue'){overdueContainer()}
-
+else if(currentList == 'Low'){lowContainer()}
+else if(currentList == 'Medium'){mediumContainer()}
+else if(currentList == 'High'){highContainer()}
+console.log('b4 prevent')
     taskForm.preventDefault() //stops whole page from reloading on form submit. 
-  
+    console.log('after prevent')
    
 })
 
@@ -134,6 +160,15 @@ function getTaskInfo(){
         upcoming.push(task)
     }
     
+    if(task.priority == "Low"){
+        low.push(task)
+    }
+    if(task.priority == "Medium"){
+        medium.push(task)
+    }
+    if(task.priority == "High"){
+        high.push(task)
+    }
     tasks.push(task)
 }
 /* template: 
@@ -314,4 +349,3 @@ function isUpComing(taskTime, taskDate){
 
 
 
-todayContainer()

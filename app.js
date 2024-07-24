@@ -59,42 +59,10 @@ let overdue = []
 let high = [] 
 let medium = [] 
 let low = [] 
-tasks = localStorage.getItem('tasks').split(',')
-localStorage.setItem('tasks', tasks)
-
-function repopulateTaskArrays(){ // go through all tasks and add it to the respective array. 
-//remove all tasks from feature arrays 
-for(const arr of [today, upcoming, overdue, high,medium,low]){
-    arr.splice(0,arr.length);
-}
 
 
-//add all tasks back to feature arrays
-    for(const task of tasks){
-    
-    if( isOverdue(task.dueTime, task.dueDate)){
-        overdue.push(task)
-    }
 
-    if( isToday(task.dueDate)){
-        today.push(task)
-    }
 
-    if( isUpComing(task.dueTime, task.dueDate )){
-        upcoming.push(task)
-    }
-    
-    if(task.priority == "Low"){
-        low.push(task)
-    }
-    if(task.priority == "Medium"){
-        medium.push(task)
-    }
-    if(task.priority == "High"){
-        high.push(task)
-    }
-}
-} 
 
 // Container methods will wipe current conteiner and replace it with tasks of given time slot. 
 
@@ -155,11 +123,32 @@ function ShowMenu(){
     Modal.style.display = 'block'
 }
 
-taskForm.addEventListener('submit', (taskForm) =>{
 
+
+function saveTasksToLocalStorage() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+    
+function loadTasksFromLocalStorage() {
+        const tasksJSON = localStorage.getItem('tasks');
+        if (tasksJSON) {
+            tasks = JSON.parse(tasksJSON);
+        } else {
+            tasks = []
+        }
+    }
+
+
+
+loadTasksFromLocalStorage()
+
+console.log(tasks)
+taskForm.addEventListener('submit', (taskForm) =>{
+    
     getTaskInfo()//whenever a task gets added the storage needs to be updated, 
-    repopulateTaskArrays()
     hideModal()
+    saveTasksToLocalStorage()
+    console.log(tasks)
 //Once a task is added Main container should reload incase new task goes in container. 
 if(currentList == 'Today'){todayContainer()}
 else if(currentList == 'Upcoming'){upcomingContainer()}
@@ -243,8 +232,8 @@ for(const i of allArrays){
     }
 }
 
-
-
+// let i of arr works like the python for i in arr, let j in i works like the python for i in range, one iterates through element the other through index. 
+saveTasksToLocalStorage()
 
 }
 
@@ -323,7 +312,7 @@ function hideModal(){
  
 //if task time and date greater than current time and date than it is overdue.
 function isOverdue(taskTime, taskDate){
-   
+   console.log(taskTime, taskDate)
     let taskYear = Number(taskDate.substring(0,4))
     let taskMonth = Number(taskDate.substring(5,7))
     let taskDay = Number(taskDate.substring(8,10))
@@ -385,5 +374,35 @@ function isUpComing(taskTime, taskDate){
 
 
 
+repopulateFeatures()
+if(currentList == 'Today'){todayContainer()}
+else if(currentList == 'Upcoming'){upcomingContainer()}
+else if(currentList == 'Overdue'){overdueContainer()}
+else if(currentList == 'Low'){lowContainer()}
+else if(currentList == 'Medium'){mediumContainer()}
+else if(currentList == 'High'){highContainer()}
+function repopulateFeatures(){// readd feature tasks that were removed after page refresh
+   for(let task of tasks){
+    if( isOverdue(task.dueTime, task.dueDate)){
+        overdue.push(task)
+    }
 
+    if( isToday(task.dueDate)){
+        today.push(task)
+    }
+
+    if( isUpComing(task.dueTime, task.dueDate )){
+        upcoming.push(task)
+    }
+    
+    if(task.priority == "Low"){
+        low.push(task)
+    }
+    if(task.priority == "Medium"){
+        medium.push(task)
+    }
+    if(task.priority == "High"){
+        high.push(task)
+    }}
+}
 

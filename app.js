@@ -14,7 +14,7 @@ taskName
 */
 const date = new Date()
 let local = date.toLocaleString('en-US', { hour12: false})
-console.log(date.toLocaleString('en-US', { hour12: false}))
+
 
 
 let taskID = 0 
@@ -142,7 +142,7 @@ function loadTasksFromLocalStorage() {
 
 loadTasksFromLocalStorage()
 
-console.log(tasks)
+
 taskForm.addEventListener('submit', (taskForm) =>{
     
     getTaskInfo()//whenever a task gets added the storage needs to be updated, 
@@ -240,7 +240,7 @@ saveTasksToLocalStorage()
 
 function createTaskElementsIteratevely(array){
     for(let i in array){
-        console.log(array[i].taskName , " ID:", array[i].ID)
+        
         let taskItem = document.createElement('div')
         taskItem.classList.add('taskItem')
     
@@ -287,6 +287,13 @@ function createTaskElementsIteratevely(array){
         taskPriority.innerHTML = array[i].priority + " Priority"
         taskRight.append(taskPriority)  
     
+        let date = document.createElement('div')
+        date.classList.add('date')
+        todaysDate = array[i].dueDate.substring(5,7) +"-"+ array[i].dueDate.substring(8,10)+"-"+ array[i].dueDate.substring(0,4)
+
+
+        date.innerHTML = todaysDate
+        taskRight.append(date)
 
     completionButton.addEventListener('click', ()=>{
         taskItem.remove()
@@ -306,19 +313,19 @@ function hideModal(){
     let currentYear = date.getFullYear()
     let currentDay = date.getDate()
     let currentMonth = date.getMonth()+1 
-    let currentTime = local.substring(10,13)+ local.substring(13,15)
+    let currentTime = local.substring(11,13)+ local.substring(13,16)
   
 
  
 //if task time and date greater than current time and date than it is overdue.
 function isOverdue(taskTime, taskDate){
-   console.log(taskTime, taskDate)
+  
     let taskYear = Number(taskDate.substring(0,4))
     let taskMonth = Number(taskDate.substring(5,7))
     let taskDay = Number(taskDate.substring(8,10))
     let formatedCurrent = currentTime.replace(':','')
     taskTime = taskTime.replace(':','')
-        console.log(currentYear> taskYear, currentMonth> taskMonth, currentDay> taskDay, Number(formatedCurrent)> Number(taskTime))
+        
     if(currentYear> taskYear){
         return true
     }
@@ -326,9 +333,10 @@ function isOverdue(taskTime, taskDate){
     else if(currentMonth> taskMonth){
         return true
     }                     
-    else if(currentDay>= taskDay && Number(formatedCurrent)> Number(taskTime)){
+    else if(currentDay> taskDay ){
         return true
     }
+    else if(currentDay> taskDay && Number(formatedCurrent)> Number(taskTime) )
     
     return false
 
@@ -353,6 +361,7 @@ function isUpComing(taskTime, taskDate){
     let taskDay = Number(taskDate.substring(8,10))
      taskTime = taskTime.replace(':','')
     let formatedCurrent = currentTime.replace(':','')
+    
     if(currentYear< taskYear){
         return true
     }
@@ -360,10 +369,11 @@ function isUpComing(taskTime, taskDate){
     else if(currentMonth< taskMonth){
         return true
     }
-    else if(currentDay< taskDay && Number(formatedCurrent)< Number(taskTime) ){
+    else if(currentDay< taskDay ){
         return true
     }
- 
+    else if(currentDay = taskDay && Number(formatedCurrent)< Number(taskTime))
+    
     return false
 
 }

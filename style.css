@@ -118,6 +118,19 @@ body, html {
     "c t";
 
 }
+
+.taskRight{
+    display: grid;
+
+}
+
+.date{
+    display: flex;
+    justify-content: center;
+    font-size: .8rem;
+
+}
+
 .taskText{
     grid-area: i;
 }
@@ -172,6 +185,8 @@ body, html {
     opacity: 0;
     font-family: Arial, sans-serif;
 }
+
+
 
 .completionButton:hover::before {
     content: "\2713"; 
